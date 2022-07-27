@@ -1,6 +1,10 @@
 using System.Data;
 using FriendZone.Models;
+using System;
+
+using System.Collections.Generic;
 using Dapper;
+using System.Linq;
 
 namespace FriendZone.Repositories
 {
@@ -46,6 +50,18 @@ namespace FriendZone.Repositories
             WHERE id = @Id;";
             _db.Execute(sql, update);
             return update;
+        }
+
+        internal List<Profile> GetAll()
+        {
+            string sql = "SELECT * FROM accounts";
+            return _db.Query<Profile>(sql).ToList();
+        }
+
+        internal Account getByProfileId(string id)
+        {
+            string sql = "SELECT * FROM accounts WHERE profileId = @id";
+            return _db.QueryFirstOrDefault<Account>(sql, new { id });
         }
     }
 }
