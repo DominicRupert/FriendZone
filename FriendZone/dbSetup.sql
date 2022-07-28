@@ -15,9 +15,9 @@ CREATE TABLE
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
         updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
         
-        subscriberId INT NOT NULL COMMENT 'User Id',
-        subbedId VARCHAR(255) COMMENT 'Account Id'
-        FOREIGN KEY (subbedId) REFERENCES accounts(id) ON DELETE CASCADE
+        subscriberId VARCHAR(255) COMMENT 'Subscriber Id',
+        subbedId VARCHAR(255),
+        FOREIGN KEY (subbedId) REFERENCES accounts(id) ON DELETE CASCADE,
         FOREIGN KEY (subscriberId) REFERENCES accounts(id) ON DELETE CASCADE
 
 
