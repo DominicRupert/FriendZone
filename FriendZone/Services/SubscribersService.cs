@@ -19,30 +19,26 @@ namespace FriendZone.Services
         internal Subscriber Create(Subscriber subscriberData)
         {
             return _repo.Create(subscriberData);
-        }
-        internal void Delete(int id, string userId)
-        {
-            Subscriber found = _repo.Get(id);
-            if (found == null)
-            {
-                throw new Exception("Subscriber not found");
-            }
-            if (found.AccountId != userId)
-            {
-                throw new Exception("You can only delete your own subscriptions");
-            }
-            _repo.Delete(id);
+            
         }
 
-        internal List<SubscriberProfileViewModel> GetBySubscriberId(int id)
+        internal Subscriber Get(int id)
         {
-            return _repo.GetBySubscriberId(id);
+            return _repo.Get(id);
         }
 
-        internal List<SubscriberProfileViewModel> GetByAccountId(string id)
+        internal List<SubscriberProfileViewModel> GetSubscribers(string id)
         {
-            return _repo.GetByAccountId(id);
+            return _repo.GetSubscribers(id);
         }
+
+        internal List<SubscriberProfileViewModel> GetSubbed(string id)
+        {
+            return _repo.GetSubbed(id);
+        }
+      
+    
+
        
         
     }

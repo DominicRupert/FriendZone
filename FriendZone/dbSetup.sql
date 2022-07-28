@@ -16,8 +16,8 @@ CREATE TABLE
         updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
         
         subscriberId INT NOT NULL COMMENT 'User Id',
-        streamerId VARCHAR(255) COMMENT 'Account Id'
-        FOREIGN KEY (streamerId) REFERENCES accounts(id) ON DELETE CASCADE
+        subbedId VARCHAR(255) COMMENT 'Account Id'
+        FOREIGN KEY (subbedId) REFERENCES accounts(id) ON DELETE CASCADE
         FOREIGN KEY (subscriberId) REFERENCES accounts(id) ON DELETE CASCADE
 
 

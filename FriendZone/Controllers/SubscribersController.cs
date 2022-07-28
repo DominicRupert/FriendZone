@@ -29,7 +29,7 @@ namespace FriendZone.Controllers
             try
             {
                 Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-                subscriberData.AccountId = userInfo.Id;
+                subscriberData.SubscribedId = userInfo.Id;
                 return Ok(_subscribersService.Create(subscriberData));
             }
             catch (Exception e)
@@ -37,21 +37,23 @@ namespace FriendZone.Controllers
                 return BadRequest(e.Message);
             }
         }
-        [HttpDelete("{id}")]
+
+        [HttpGet("{id}")]
         [Authorize]
-        public async Task<ActionResult<Subscriber>> DeleteAsync(int id)
+
+        public ActionResult<Subscriber> GetAsync(int id)
         {
             try
             {
-                Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-                _subscribersService.Delete(id, userInfo.Id);
-                return Ok();
+                Subscriber subscriber = _subscribersService.Get(id);
+                return Ok(_subscribersService.Get(id));
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
         }
+
     
        
     }

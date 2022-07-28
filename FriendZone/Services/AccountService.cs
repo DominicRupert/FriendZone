@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FriendZone.Models;
 using FriendZone.Repositories;
 
@@ -36,6 +37,11 @@ namespace FriendZone.Services
             original.Name = editData.Name.Length > 0 ? editData.Name : original.Name;
             original.Picture = editData.Picture.Length > 0 ? editData.Picture : original.Picture;
             return _repo.Edit(original);
+        }
+
+        internal List<Profile> GetProfiles()
+        {
+            throw new NotImplementedException();
         }
 
         internal object GetSubscribers(Account userInfo)

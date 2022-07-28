@@ -37,52 +37,7 @@ namespace FriendZone.Controllers
                 return BadRequest(e.Message);
             }
         }
-        [HttpGet("subscribers")]
-        [Authorize]
-        public async Task<ActionResult<List<SubscriberProfileViewModel>>> GetMySubscribers()
-        {
-            try
-            {
-                Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-                return Ok(_subscribersService.GetByAccountId(userInfo.Id));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-
-        [HttpGet("{id}/subscribers")]
-        public ActionResult<List<SubscriberProfileViewModel>> GetSubscribers(int id)
-        {
-            try
-            {
-                List<SubscriberProfileViewModel> subscribers = _subscribersService.GetBySubscriberId(id);
-                return Ok(subscribers);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-        [HttpPost]
-        public async Task<ActionResult<Account>> Create([FromBody] Account accountData)
-        {
-            try
-            {
-                Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-                accountData.CreatorId = userInfo.Id;
-                accountData.Creator = userInfo;
-                Account account = _accountService.Create(accountData);
-                return Ok(account);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
+       
     }
 
 

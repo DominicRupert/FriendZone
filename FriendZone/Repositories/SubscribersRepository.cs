@@ -31,56 +31,40 @@ namespace FriendZone.Repositories
 
         }
 
-        internal void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal void Delete(int id, string userId)
-        {
-            throw new NotImplementedException();
-        }
-
         internal Subscriber Get(int id)
         {
             string sql = "SELECT * FROM subscribers WHERE id = @id";
             return _db.QueryFirstOrDefault<Subscriber>(sql, new { id });
-
         }
-
-        internal List<SubscriberProfileViewModel> GetBySubscriberId(int id)
+   
+        internal List<SubscriberProfileViewModel> GetSubbed(string id)
         {
             string sql = @"
-            select
+            SELECT 
             a.*,
-            s.id as subscriberId,
-            FROM subscribers s
-            join accounts a on a.id = s.accountId
-            where s.subscriberId = @id";
+            s.id AS subscriberId
+             FROM subscribers s
+                JOIN accounts a ON s.accountId = a.id
+                WHERE s.subscriberId = @id";
+            
             return _db.Query<SubscriberProfileViewModel>(sql, new { id }).ToList();
         }
 
-        internal List<SubscriberProfileViewModel> GetByAccountId(string id)
+   
+
+        internal List<SubscriberProfileViewModel> GetSubscribers(string id)
         {
             string sql = @"
-            select
+            SELECT 
             a.*,
-            b.*,
-            s.id as subscriberId,
-            FROM subscribers s
-            JOIN accounts b on b.id = s.profileId
-            JOIN accounts a on a.id = b.creatorId
-            WHERE s.accountId = @id";
-            return _db.Query<Account, SubscriberProfileViewModel, SubscriberProfileViewModel>(sql, (prof, spvm) =>
-            {
-                spvm.Creator = prof;
-                return spvm;
-            }, new { id }).ToList();
-
-
-
-
+            s.id AS subscriberId
+             FROM subscribers s
+                JOIN accounts a ON s.subscriberId = a.id
+                WHERE s.accountId = @id";
+            return _db.Query<SubscriberProfileViewModel>(sql, new { id }).ToList();
         }
+
+      
     }
 }
 
