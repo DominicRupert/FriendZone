@@ -5,28 +5,54 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using FriendZone.Models;
+using FriendZone.Services;
+using CodeWorks.Auth0Provider;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FriendZone.Controllers
 {
-    [Route("[controller]")]
-    public class SubscribersController : Controller
+    [Route("api/[controller]")]
+    public class SubscribersController : ControllerBase
     {
-        private readonly ILogger<SubscribersController> _logger;
+        private readonly SubscribersService _subscribersService;
 
-        public SubscribersController(ILogger<SubscribersController> logger)
+        public SubscribersController(SubscribersService subscribersService)
         {
-            _logger = logger;
+            _subscribersService = subscribersService;
         }
 
-        public IActionResult Index()
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<Subscriber>> CreateAsync([FromBody] Subscriber subscriberData)
         {
-            return View();
+            try
+            {
+                Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+                subscriberData.AccountId = userInfo.Id;
+                return Ok(_subscribersService.Create(subscriberData));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<ActionResult<Subscriber>> DeleteAsync(int id)
         {
-            return View("Error!");
+            try
+            {
+                Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+                _subscribersService.Delete(id, userInfo.Id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
+    
+       
     }
 }

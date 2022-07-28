@@ -1,3 +1,4 @@
+using System;
 using FriendZone.Models;
 using FriendZone.Repositories;
 
@@ -35,6 +36,16 @@ namespace FriendZone.Services
             original.Name = editData.Name.Length > 0 ? editData.Name : original.Name;
             original.Picture = editData.Picture.Length > 0 ? editData.Picture : original.Picture;
             return _repo.Edit(original);
+        }
+
+        internal object GetSubscribers(Account userInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal Account Create(Account accountData)
+        {
+            throw new NotImplementedException();
         }
     }
 }

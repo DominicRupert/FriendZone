@@ -63,5 +63,49 @@ namespace FriendZone.Repositories
             string sql = "SELECT * FROM accounts WHERE profileId = @id";
             return _db.QueryFirstOrDefault<Account>(sql, new { id });
         }
+
+        internal List<Profile> Get()
+        {
+            string sql = @"
+            SELECT 
+                a.*,
+                b.*,
+                FROM accounts b
+                JOIN accounts a on a.id = b.creatorId";
+            return _db.Query<Account, Profile, Profile>(sql, (account, profile) =>
+            {
+                profile.Creator = account;
+                return profile;
+            }).ToList();
+        }
+        internal Profile Get(string id)
+        {
+            string sql = @"
+            SELECT 
+                a.*,
+                b.*,
+                FROM accounts b
+                JOIN accounts a on a.id = b.creatorId
+                WHERE b.id = @id";
+            return _db.Query<Account, Profile, Profile>(sql, (account, profile) =>
+            {
+                profile.Creator = account;
+                return profile;
+            }, new { id }).FirstOrDefault();
+        }
+
+        internal Profile Create(Profile profileData)
+        {
+            string sql = @"
+            INSERT INTO accounts
+              (name, picture, email, id)
+            VALUES
+              (@Name, @Picture, @Email, @Id)";
+            string id = _db.ExecuteScalar<string>(sql, profileData);
+            profileData.Id = id;
+
+            return profileData;
+        }
+
     }
 }

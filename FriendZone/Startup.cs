@@ -42,6 +42,10 @@ namespace FriendZone
             
             services.AddScoped<AccountsRepository>();
             services.AddScoped<AccountService>();
+
+            services.AddTransient<SubscribersRepository>();
+            services.AddTransient<SubscribersService>();
+
         }
 
         private void ConfigureCors(IServiceCollection services)

@@ -21,10 +21,10 @@ namespace FriendZone.Repositories
         {
             string sql = @"
             INSERT INTO subscribers
-                           (subscriberId, accountId)
-                           VALUES
-                           (@SubscriberId, @AccountId);
-                           SELECT LAST_INSERT_ID();";
+             (subscriberId, accountId)
+               VALUES
+               (@SubscriberId, @AccountId);
+                SELECT LAST_INSERT_ID();";
             int id = _db.ExecuteScalar<int>(sql, subscriberData);
             subscriberData.Id = id;
             return subscriberData;
@@ -68,10 +68,10 @@ namespace FriendZone.Repositories
             b.*,
             s.id as subscriberId,
             FROM subscribers s
-            join accounts b on b.id = s.profileId
-            join accounts a on a.id = p.creatorId
-            where s.accountId = @id";
-            return _db.Query<Account, SubscriberProfileViewModel,  SubscriberProfileViewModel>(sql, (prof, spvm) =>
+            JOIN accounts b on b.id = s.profileId
+            JOIN accounts a on a.id = b.creatorId
+            WHERE s.accountId = @id";
+            return _db.Query<Account, SubscriberProfileViewModel, SubscriberProfileViewModel>(sql, (prof, spvm) =>
             {
                 spvm.Creator = prof;
                 return spvm;
